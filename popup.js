@@ -1,39 +1,56 @@
 window.onload = function() {
 
-  //no strings attatched BART api key
-  var key = "&key=ZM4P-PKYX-99KT-DWE9";
+  //station 1 default departure station, routes
+  var st1 = {name: "PLZA", bound: 1, route: [3, 8]};
 
-  //gets current time in hours, min
-  var date = new Date();
-  var time = [date.getHours(), date.getMinutes()];
+  //create DOM element pointers for h3 name elem., p station info elem., and ul departures
+  //FIXME: make st2
+  var st1HTML = {name: document.getElementById("st1Name"), info: document.getElementById("st1Info"), departures: document.getElementById("st1Departures")};
+
+  //initializes DOM to default state
+  st1HTML.name.innerHTML = "Loading...";
+  st1HTML.info.innerHTML = "";
+  st1HTML.departures.innerHTML = "";
 
 
-  //default station 1 -> el cerrito plaza station
-  var station1 = "PLZA";
-  //default route for station 1 -> all northbound routes
-  var route1 = [3, 8];
+  //gets station, route info. displays it on DOM
+  var getStation = function(st, stHTML) {
+    //Initializes xml http request
+    var newClient = new httpGet();
+    var uri = "http://api.bart.gov/api/sched.aspx?cmd=stnsched&orig=" + st.name + key + "&date=today";
 
-  //initializes DOM of extension
-  //prevents outdated data from being seen
-  var station1HTML = document.getElementById("station1");
-  station1HTML.innerHTML = "Loading...";
-  var st1InfoHTML = document.getElementById("st1Info");
-  st1InfoHTML.innerHTML = "";
-  var st1DeparturesHTML = document.getElementById("st1Departures");
-  st1DeparturesHTML.innerHTML = "";
+    //xml http get and callback function to that info to DOM
+    newClient.get(uri, function(response) {
 
-  //runs every time the extension is used
-  //gets default one station @ el cerrito plaza, all northbound routes
-  //unless user selected unique station, route
-  //in which case, gets desired station-route info
-  var newClient = new httpGet();
-  newClient.get("http://api.bart.gov/api/sched.aspx?cmd=stnsched&orig=" + station1 + key, function(response) {
-    station1HTML.innerHTML = response.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+      //writes name of bart station to DOM
+      stHTML.name.innerHTML = response.getElementsByTagName("name")[0].childNodes[0].nodeValue;
 
-    var departures = response.getElementsByTagName("item")
-    for (i = 0; i < route1.length; i++) {
-      console.log('hello');
-    };
-  });
+      //gets next 5 requested departures
+      var arr = response.getElementsByTagName("item");
+      var departures = [];
+      for (var i = 0; i < arr.length; i++) {
+        var routeInt = function() {
+          return parseInt(arr[i].getAttribute("line").slice(-1));
+        };
+        departures[i] = {route:routeInt(), time:arr[i].getAttribute("origTime")};
+      };
+      var myDepartures = departures.filter(function(elem) {
+        return (st.route.includes(elem.route) && (checkTime(elem.time)));
+      }).slice(0, 5);
 
+      //writes departures to DOM unordered list
+      //FIXME add mouseover tooltips!!! for route info, station info
+      for (var i = 0; i < myDepartures.length; i++) {
+        var elem = document.createElement("li");
+        elem.innerHTML = deltaTime(myDepartures[i].time) + "  mins";
+        elem.className = "route" + myDepartures[i].route;
+        stHTML.departures.appendChild(elem);
+      };
+
+      console.log(myDepartures);
+    });
+  };
+
+  getStation(st1, st1HTML);
 };
+

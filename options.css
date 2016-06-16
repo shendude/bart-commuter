@@ -1,0 +1,11 @@
+.station {
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+}
+
+#save {
+  display: block;
+  margin: 0 auto;
+  width: 10%;
+}

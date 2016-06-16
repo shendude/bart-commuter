@@ -1,0 +1,40 @@
+body {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  white-space: nowrap;
+  max-width: 400px;
+  max-height: fit-content;
+}
+
+h2 {
+  padding: 5px;
+}
+
+div {
+  background-color: #CCC;
+  border-radius: 5px;
+}
+
+ul {
+  list-style-position: inside;
+  padding-left: 0;
+  text-align: right;
+  list-style-type: none;
+}
+
+li {
+  font-weight: 900;
+  border-color: black;
+  padding-right: 5px;
+  border-width: 1px;
+  border-radius: 5px;
+  border-style: solid;
+}
+
+.route3 {
+  background-color: #F00;
+}
+
+.route8 {
+  background-color: #09F;
+}
