@@ -77,3 +77,58 @@ var checkTime = function(str) {
     return false;
   };
 };
+
+//given a nodelist containing values, returns an array of those values
+//also removes first blankspace if there is one
+var nodeArray = function(nodeList) {
+  var arr = [];
+  for (var i = 0; i < nodeList.length; i++) {
+    arr[i] = nodeList[i].childNodes[0].nodeValue;
+    if (arr[i][0] === " ") {
+      arr[i] = arr[i].slice(1);
+    };
+  };
+  return arr;
+};
+
+//returns an object containing route names matched to their route ID's
+var routeTable = function() {
+  var newClient = new httpGet();
+  var uri = "http://api.bart.gov/api/route.aspx?cmd=routes" + key;
+  var myRoutes = {};
+
+  //xml http get and callback function to write that info to myRoutes object
+  newClient.get(uri, function(response) {
+    var arr = response.getElementsByTagName("route");
+    var rName;
+    var rId;
+    for (var i = 0; i < arr.length; i++) {
+      rName = arr[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+      rId = arr[i].getElementsByTagName("routeID")[0].childNodes[0].nodeValue;
+      myRoutes[rId] = rName;
+    };
+  });
+  return myRoutes;
+};
+
+var routes = routeTable();
+
+//writes a given array to a HTML element via checkboxes and labels
+var writeChkbox = function(arr, tarHTML) {
+  for (var i = 0; i < arr.length; i++) {
+    var newElem = document.createElement("label");
+    var newElem2 = document.createElement("input");
+    newElem2.setAttribute("type", "checkbox");
+    newElem2.setAttribute("id", arr[i]);
+
+    newElem.appendChild(newElem2);
+    newElem.appendChild(document.createTextNode(routes[arr[i]]));
+    tarHTML.appendChild(newElem);
+  };
+};
+
+var selectRoutes = function() {
+  if (document.getElementById("st1Input").value) {
+    console.log("hello world");
+  };
+};

@@ -10,9 +10,12 @@
   <body>
     <div class="station">
       Station 1 :
-      <select id="st1Input">
-        <option value="PLZA">El Cerrito Plaza</option>
+      <select id="st1Input" onchange="selectRoutes()">
+        <option value="">loading...</option>
       </select>
+      <br>
+      <div class="routes" id="st1nb"></div>
+      <div class="routes" id="st1sb"></div>
       <br><br>
 
       <label>

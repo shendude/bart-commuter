@@ -4,6 +4,15 @@
   border-radius: 5px;
 }
 
+.routes {
+  display: inline-block;
+  width: 40%;
+}
+
+label {
+  display: block;
+}
+
 #save {
   display: block;
   margin: 0 auto;
