@@ -127,8 +127,10 @@ var writeChkbox = function(arr, tarHTML) {
   };
 };
 
-var selectRoutes = function() {
-  if (document.getElementById("st1Input").value) {
-    console.log("hello world");
-  };
+var fade = function() {
+  this.className = "fade";
 };
+
+var unfade = function() {
+  this.className = "unfade";
+}

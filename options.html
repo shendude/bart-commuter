@@ -2,20 +2,20 @@
 <html>
   <head>
     <title>Bart-commuter Options</title>
-    <script src="options.js"></script>
     <script src="utils.js"></script>
+    <script src="options.js"></script>
     <link rel="stylesheet" href="options.css">
   </head>
 
   <body>
     <div class="station">
       Station 1 :
-      <select id="st1Input" onchange="selectRoutes()">
+      <select id="st1Input" onchange="selectRoutes(0)">
         <option value="">loading...</option>
       </select>
       <br>
-      <div class="routes" id="st1nb"></div>
-      <div class="routes" id="st1sb"></div>
+      <div class="routes" id="st1nb" onmouseover="unfade()" onmouseout="fade()"></div>
+      <div class="routes" id="st1sb" onmouseover="unfade()" onmouseout="fade()"></div>
       <br><br>
 
       <label>
@@ -28,6 +28,9 @@
       <select id="st1Input">
         <option value="PLZA">El Cerrito Plaza</option>
       </select>
+      <br>
+      <div class="routes" id="st2nb" onmouseover="unfade()" onmouseout="fade()"></div>
+      <div class="routes" id="st2sb" onmouseover="unfade()" onmouseout="fade()"></div>
       <br><br>
 
       <label>

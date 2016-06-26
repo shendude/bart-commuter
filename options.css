@@ -5,8 +5,10 @@
 }
 
 .routes {
+  opacity: 0.5;
   display: inline-block;
   width: 40%;
+  background-color: #ccc;
 }
 
 label {
@@ -17,4 +19,24 @@ label {
   display: block;
   margin: 0 auto;
   width: 10%;
+}
+
+@keyframes fadein {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0.5; }
+}
+
+.fade {
+  opacity: 0.5;
+  animation: fadeout 1s;
+}
+
+.unfade {
+  opacity: 1;
+  animation: fadein 1s;
 }
