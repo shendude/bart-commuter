@@ -1,7 +1,7 @@
 window.onload = function() {
 
   //station 1 default departure station, routes
-  var st1 = {name: "PLZA", bound: 1, route: [3, 8]};
+  var st1 = {name: "12TH", bound: 1, route: [1, 5, 7, 11]};
 
   //create DOM element pointers for h3 name elem., p station info elem., and ul departures
   //FIXME: make st2
@@ -29,13 +29,10 @@ window.onload = function() {
       var arr = response.getElementsByTagName("item");
       var departures = [];
       for (var i = 0; i < arr.length; i++) {
-        var routeInt = function() {
-          return parseInt(arr[i].getAttribute("line").slice(-1));
-        };
-        departures[i] = {route:routeInt(), time:arr[i].getAttribute("origTime")};
+        departures[i] = {route:routeInt(arr[i].getAttribute("line")), time:arr[i].getAttribute("origTime")};
       };
       var myDepartures = departures.filter(function(elem) {
-        return (st.route.includes(elem.route) && (checkTime(elem.time)));
+        return ((st.route.includes(elem.route)) && (checkTime(elem.time)));
       }).slice(0, 5);
 
       //writes departures to DOM unordered list
@@ -46,7 +43,6 @@ window.onload = function() {
         elem.className = "route" + myDepartures[i].route;
         stHTML.departures.appendChild(elem);
       };
-
       console.log(myDepartures);
     });
   };

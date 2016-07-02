@@ -11,6 +11,9 @@ var refreshTime = function(){
   time = [date.getHours(), date.getMinutes()];
 };
 
+//these objects are saved by the options file
+var mySettings = {useSt2: false, useDefault: true, st1: "", st2: "", st1nb: [], st1sb: [], st2nb: [], st2sb: []};
+var fadeSettings = {st1nb: true, st1sb: true, st2nb: true, st2sb: true, st2: true};
 
 //xml http request constructor, calls bart api
 //create new getter when you construct httpGet
@@ -25,6 +28,11 @@ var httpGet = function() {
     myXml.open("GET", myUrl, true);
     myXml.send();
   };
+};
+
+//given a route id in format "route xx" returns interger value of route
+var routeInt = function(str) {
+  return parseInt(str.split(" ").slice(1, 2)[0]);
 };
 
 //turns a string of x:xx xx or xx:xx xx into a two number array
@@ -92,28 +100,36 @@ var nodeArray = function(nodeList) {
 };
 
 //returns an object containing route names matched to their route ID's
+//in addition to object containing route names matched to their colors
+//routes points to dictionary of route ids to full route names
+//routecolors points to dictionary of route ids to associated colors -> refrence bart map
 var routeTable = function() {
   var newClient = new httpGet();
   var uri = "http://api.bart.gov/api/route.aspx?cmd=routes" + key;
   var myRoutes = {};
+  var myRoutesColors = {};
 
   //xml http get and callback function to write that info to myRoutes object
   newClient.get(uri, function(response) {
     var arr = response.getElementsByTagName("route");
     var rName;
     var rId;
+    var rColor;
     for (var i = 0; i < arr.length; i++) {
       rName = arr[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
       rId = arr[i].getElementsByTagName("routeID")[0].childNodes[0].nodeValue;
+      rColor = arr[i].getElementsByTagName("color")[0].childNodes[0].nodeValue;
       myRoutes[rId] = rName;
+      myRoutesColors[rId] = rColor;
     };
   });
-  return myRoutes;
+  return [myRoutes, myRoutesColors];
 };
+var routeTableResults = routeTable();
+var routes = routeTableResults[0];
+var routeColors = routeTableResults[1];
 
-var routes = routeTable();
-
-//writes a given array to a HTML element via checkboxes and labels
+//writes a given array to a HTML element with checkboxes and labels
 var writeChkbox = function(arr, tarHTML) {
   for (var i = 0; i < arr.length; i++) {
     var newElem = document.createElement("label");
@@ -127,10 +143,8 @@ var writeChkbox = function(arr, tarHTML) {
   };
 };
 
-var fade = function() {
-  this.className = "fade";
+//saves user slected stations, routes, alarm info
+var save = function() {
+  //FIXME
 };
 
-var unfade = function() {
-  this.className = "unfade";
-}
