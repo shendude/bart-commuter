@@ -3,7 +3,7 @@
 
   "name": "Bart Commuter",
   "description": "This extension lets a bart user know when his train will arrive",
-  "version": "1.11",
+  "version": "1.12",
 
   "options_page": "options.html",
   "browser_action": {
