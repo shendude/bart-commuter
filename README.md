@@ -22,3 +22,7 @@ chrome-extension://afkmlnblnbgncdccljkdcjgaihnhmcbk/options.html
 -click extension button to see train arrival times
 
 -mouse over times for tooltip info
+
+# notes:
+
+-if using this extension late at night, some lines will stop running before others. I'd recommend selecting multiple routes heading your direction. 
