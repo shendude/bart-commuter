@@ -1,10 +1,10 @@
 # bart-commuter
-a bart chrome extension 
+one-click way to see when your BART trains are arriving
 
 
 install at: https://chrome.google.com/webstore/detail/bart-commuter/afkmlnblnbgncdccljkdcjgaihnhmcbk
 
-to configure for first use:
+# to configure for first use:
 
 -go into extension option page (right click button, or visit chrome-extension://afkmlnblnbgncdccljkdcjgaihnhmcbk/options.html)
 
@@ -15,7 +15,7 @@ to configure for first use:
 -click SAVE
 
 
-to use:
+# to use:
 
 -click extension button to see train arrival times
 
