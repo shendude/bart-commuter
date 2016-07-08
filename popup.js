@@ -62,11 +62,10 @@ window.onload = function() {
           break;
       };
 
-      console.log(myDepartures);
     });
   };
 
-
+  //runs upon opening app, fills in DOM with route info
   load(function() {
     var st1 = {name: mySettings.st1, bound: compArr(mySettings.st1nb, mySettings.st1sb),
                route: mySettings.st1nb.concat(mySettings.st1sb)};

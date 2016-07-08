@@ -181,13 +181,30 @@ var apply = function() {
 };
 
 //saves user slected stations, routes, alarm info
-//FIXME: alert user if saving without routes selected , routes selected both ways
-//FIXME: add bart map
 var save = function() {
   chrome.storage.sync.set({
     settings: mySettings,
     fade: fadeSettings
   }, function() {
+    //writes warnings if applicable
+    var alertStr = "";
+    if ((mySettings.st1nb.length === 0) && (mySettings.st1sb.length === 0)) {
+      alertStr += "Warning: You have not selected any routes for Station #1 \n";
+    } else if ((mySettings.st1nb.length > 0) && (mySettings.st1sb.length > 0)) {
+      alertStr += "Warning: You have selected routes running in opposite directions for Station 1 \n";
+    };
+    if (fadeSettings.st2 === false) {
+      if ((mySettings.st2nb.length === 0) && (mySettings.st2sb.length === 0)) {
+        alertStr += "Warning: You have not selected any routes for Station #2 \n";
+      } else if ((mySettings.st2nb.length > 0) && (mySettings.st2sb.length > 0)) {
+        alertStr += "Warning: You have selected routes running in opposite directions for Station 2 \n";
+      };
+    };
+    if (alertStr.length > 0) {
+      alert(alertStr);
+    };
+
+    //controls green save confirmation checkmark
     document.getElementById("check").className = "flashchk";
     window.setTimeout(function() {
       document.getElementById("check").className = "";
