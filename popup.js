@@ -61,6 +61,9 @@ window.onload = function() {
           stHTML.info.innerHTML = "Northbound and Southboud";
           break;
       };
+      if ((myDepartures.length === 0) && (st.bound != 0)) {
+        stHTML.info.innerHTML = "Selected routes not running at this time";
+      };
 
     });
   };
@@ -75,7 +78,9 @@ window.onload = function() {
       var st2 = {name: mySettings.st2, bound: compArr(mySettings.st2nb, mySettings.st2sb),
                route: mySettings.st2nb.concat(mySettings.st2sb)};
       getStation(st2, st2HTML);
-    };
+    } else {
+      document.getElementById("st2").style.display = "none";
+    }
   });
 };
 

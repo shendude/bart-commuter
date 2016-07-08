@@ -189,15 +189,15 @@ var save = function() {
     //writes warnings if applicable
     var alertStr = "";
     if ((mySettings.st1nb.length === 0) && (mySettings.st1sb.length === 0)) {
-      alertStr += "Warning: You have not selected any routes for Station #1 \n";
+      alertStr += "Warning: You have not selected any routes for Trip 1 \n";
     } else if ((mySettings.st1nb.length > 0) && (mySettings.st1sb.length > 0)) {
-      alertStr += "Warning: You have selected routes running in opposite directions for Station 1 \n";
+      alertStr += "Warning: You have selected routes running in opposite directions for Trip 1 \n";
     };
     if (fadeSettings.st2 === false) {
       if ((mySettings.st2nb.length === 0) && (mySettings.st2sb.length === 0)) {
-        alertStr += "Warning: You have not selected any routes for Station #2 \n";
+        alertStr += "Warning: You have not selected any routes for Trip 2 \n";
       } else if ((mySettings.st2nb.length > 0) && (mySettings.st2sb.length > 0)) {
-        alertStr += "Warning: You have selected routes running in opposite directions for Station 2 \n";
+        alertStr += "Warning: You have selected routes running in opposite directions for Trip 2 \n";
       };
     };
     if (alertStr.length > 0) {
