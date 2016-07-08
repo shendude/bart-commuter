@@ -12,6 +12,10 @@
   },
   "permissions": [
     "activeTab",
+    "storage",
     "https://ajax.googleapis.com/"
+  ],
+  "web_accessible_resources": [
+    "system-map.gif"
   ]
 }

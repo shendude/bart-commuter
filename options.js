@@ -1,7 +1,7 @@
 //FIXME add loadoptions funciton
 
 //writes station list to dropdown station selection menu
-var getStations = function(targetHTML) {
+var getStations = function(targetHTML, callback) {
   targetHTML.innerHTML = "";
   //Initializes xml http request
   var newClient = new httpGet();
@@ -21,14 +21,19 @@ var getStations = function(targetHTML) {
       var newElem = document.createElement("option");
       newElem.appendChild(document.createTextNode(stationArr[i].name));
       newElem.setAttribute("value", stationArr[i].abbr);
+      newElem.className = stationArr[i].abbr;
       targetHTML.appendChild(newElem);
+    };
+
+    if (callback != undefined) {
+      callback();
     };
   });
 };
 
 
 //writes selectable route info into DOM after selecting station
-var getRoutes = function(myStation, nbHTML, sbHTML) {
+var getRoutes = function(myStation, nbHTML, sbHTML, callback) {
 
   nbHTML.innerHTML = "Northbound Trains:";
   sbHTML.innerHTML = "Southbound Trains:";
@@ -46,6 +51,10 @@ var getRoutes = function(myStation, nbHTML, sbHTML) {
 
     writeChkbox(nRoutes, nbHTML);
     writeChkbox(sRoutes, sbHTML);
+
+    if (callback != undefined) {
+      callback();
+    };
   });
 };
 
@@ -55,6 +64,7 @@ var writeListeners = function() {
   document.getElementById("st2Input").addEventListener("change", selectStation2, false);
   document.getElementById("st2overlay").addEventListener("click", st2fade, false);
   document.getElementById("close").addEventListener("click", st2fade, false);
+  document.getElementById("save").addEventListener("click", save, false);
 
   var routeArr = ["st1nb", "st1sb", "st2nb", "st2sb"];
   for (var i = 0; i < routeArr.length; i++) {
@@ -104,12 +114,10 @@ var st2fade = function() {
     document.getElementById("st2overlay").style.visibility = "hidden";
     document.getElementById("station2").style.opacity = "1";
     fadeSettings.st2 = false;
-    mySettings.useSt2 = true;
   } else {
     document.getElementById("st2overlay").style.visibility = "visible";
     document.getElementById("station2").style.opacity = "0.5";
     fadeSettings.st2 = true;
-    mySettings.useSt2 = false;
   };
 };
 
@@ -120,20 +128,76 @@ var routeClick = function() {
   var newArr = [];
   for (var i = 1; i < arr.length; i++) {
     if (arr[i].childNodes[0].checked) {
-      newArr.push(arr[i].childNodes[0].id);
+      newArr.push(longName(arr[i].childNodes[0].className));
     };
   };
+  mySettings[this.id] = newArr;
   if (newArr.length > 0) {
-    mySettings[this.id] = newArr;
     fadeSettings[this.id] = false;
   } else {
     fadeSettings[this.id] = true;
   };
 };
 
-//load default values and events to improve readability FIXME load defaults only if no settings saved
+//applies loaded data onto DOM, marks selected routes, fades appropriate sections
+//heavily relies on async callbacks on load, getStations, getRoutes
+var apply = function() {
+
+  //helper function marks the checkboxes of routes, and sets opacity
+  var checkRoutes = function() {
+    var routeArr = ["st1nb", "st1sb", "st2nb", "st2sb"];
+    for (var x in routeArr) {
+      if (mySettings[routeArr[x]].length > 0) {
+        for (var y in mySettings[routeArr[x]]) {
+          document.getElementById(routeArr[x]).getElementsByClassName(shortName(mySettings[routeArr[x]][y]))[0].checked = true;
+        };
+        document.getElementById(routeArr[x]).className = "unfade";
+      };
+    };
+  };
+
+  //automatically selects proper station from dropdowns
+  getStations(document.getElementById("st1Input"), function() {
+    document.getElementById("st1Input").getElementsByClassName(mySettings.st1)[0].selected = true;
+  });
+  getStations(document.getElementById("st2Input"), function() {
+    if (mySettings.st2) {
+      document.getElementById("st2Input").getElementsByClassName(mySettings.st2)[0].selected = true;
+    };
+  });
+
+  //automatically selects proper routes, sets opacity settings for entire DOM
+  //relies on checkRoutes function
+  getRoutes(mySettings.st1, document.getElementById("st1nb"), document.getElementById("st1sb"), checkRoutes);
+  if (mySettings.st2) {
+    if (fadeSettings.st2 === false) {
+      fadeSettings.st2 = true;
+      st2fade();
+    };
+    getRoutes(mySettings.st2, document.getElementById("st2nb"), document.getElementById("st2sb"), checkRoutes);
+  } else {
+    getRoutes("12TH", document.getElementById("st2nb"), document.getElementById("st2sb"));
+  };
+};
+
+//saves user slected stations, routes, alarm info
+//FIXME: alert user if saving without routes selected , routes selected both ways
+//FIXME: add bart map
+var save = function() {
+  chrome.storage.sync.set({
+    settings: mySettings,
+    fade: fadeSettings
+  }, function() {
+    document.getElementById("check").className = "flashchk";
+    window.setTimeout(function() {
+      document.getElementById("check").className = "";
+    }, 1000)
+  });
+};
+
+//load default values and events to add accessability
 window.onload = function() {
-  getStations(document.getElementById("st1Input"));
-  getRoutes("12TH", document.getElementById("st1nb"), document.getElementById("st1sb"));
+  load(apply);
   writeListeners();
+  document.getElementById("map").src = chrome.extension.getURL("system-map.gif");
 };

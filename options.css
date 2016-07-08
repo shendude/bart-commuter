@@ -1,5 +1,6 @@
 body {
   font: 18px arial, sans-serif;
+  text-align: center;
 }
 
 .station {
@@ -19,7 +20,7 @@ label {
 }
 
 #save {
-  display: block;
+  display: inline-block;
   margin: 0 auto;
   width: 10%;
 }
@@ -34,21 +35,27 @@ label {
   to { opacity: 0.5; }
 }
 
+@keyframes flash {
+  from { opacity: 1; }
+  to { opacity: 0 ;}
+}
 
 .fade {
   display: inline-block;
-  width: 40%;
+  width: 45%;
   background-color: #ccc;
   opacity: 0.5;
   animation: fadeout 1s;
+  text-align: left;
 }
 
 .unfade {
   display: inline-block;
-  width: 40%;
+  width: 45%;
   background-color: #ccc;
   opacity: 1;
   animation: fadein 1s;
+  text-align: left;
 }
 
 #st2overlay {
@@ -61,6 +68,7 @@ label {
   font: 50px bold arial, sans-serif;
   opacity: .5;
   cursor: pointer;
+  z-index: 1;
 }
 
 #station2 {
@@ -68,8 +76,21 @@ label {
 }
 
 #close {
-  float: right;
+  right: 0;
   margin-right: 5px;
   display: inline-block;
   cursor: pointer;
+  position: absolute;
+}
+
+#check {
+  color: green;
+  display: inline-block;
+  opacity: 0;
+  position: absolute;
+  cursor: default;
+}
+
+.flashchk {
+  animation: flash 1s;
 }

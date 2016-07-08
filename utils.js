@@ -12,7 +12,7 @@ var refreshTime = function(){
 };
 
 //these objects are saved by the options file
-var mySettings = {useSt2: false, useDefault: true, st1: "", st2: "", st1nb: [], st1sb: [], st2nb: [], st2sb: []};
+var mySettings = {st1: "", st2: "", st1nb: [], st1sb: [], st2nb: [], st2sb: []};
 var fadeSettings = {st1nb: true, st1sb: true, st2nb: true, st2sb: true, st2: true};
 
 //xml http request constructor, calls bart api
@@ -30,13 +30,33 @@ var httpGet = function() {
   };
 };
 
-//given a route id in format "route xx" returns interger value of route
-var routeInt = function(str) {
-  return parseInt(str.split(" ").slice(1, 2)[0]);
+//given two arrays returns values designatng which one is empty
+//return 0 if both empty, 1 if arr1 nonempty, 2 if arr2 nonempty, 3 if both nonempty
+var compArr = function(arr1, arr2) {
+  if (arr1.length > 0) {
+    if (arr2.length > 0) {
+      return 3;
+    } else {
+      return 1;
+    };
+  } else if (arr2.length > 0) {
+    return 2;
+  };
+  return 0;
 };
 
+//given a route id in format "ROUTE XX" returns format "routeXX"
+var shortName = function(str) {
+  return "route" + str.split(/\D/).join("");
+};
+
+//vice versa of above function
+var longName = function(str) {
+  return "ROUTE " + str.split(/\D/).join("");
+}
+
 //turns a string of x:xx xx or xx:xx xx into a two number array
-//returns that array
+//then returns that array
 var parseTime = function(str) {
   var arr = str.split(/\W+/);
   arr[0] = parseInt(arr[0]);
@@ -101,8 +121,6 @@ var nodeArray = function(nodeList) {
 
 //returns an object containing route names matched to their route ID's
 //in addition to object containing route names matched to their colors
-//routes points to dictionary of route ids to full route names
-//routecolors points to dictionary of route ids to associated colors -> refrence bart map
 var routeTable = function() {
   var newClient = new httpGet();
   var uri = "http://api.bart.gov/api/route.aspx?cmd=routes" + key;
@@ -126,7 +144,9 @@ var routeTable = function() {
   return [myRoutes, myRoutesColors];
 };
 var routeTableResults = routeTable();
+//routes points to dictionary of route ids to full route names
 var routes = routeTableResults[0];
+//routecolors points to dictionary of route ids to associated colors -> refrence bart map
 var routeColors = routeTableResults[1];
 
 //writes a given array to a HTML element with checkboxes and labels
@@ -135,7 +155,7 @@ var writeChkbox = function(arr, tarHTML) {
     var newElem = document.createElement("label");
     var newElem2 = document.createElement("input");
     newElem2.setAttribute("type", "checkbox");
-    newElem2.setAttribute("id", arr[i]);
+    newElem2.className = shortName(arr[i]);
 
     newElem.appendChild(newElem2);
     newElem.appendChild(document.createTextNode(routes[arr[i]]));
@@ -143,8 +163,20 @@ var writeChkbox = function(arr, tarHTML) {
   };
 };
 
-//saves user slected stations, routes, alarm info
-var save = function() {
-  //FIXME
-};
 
+
+//loads up saved settings into public variables, then callback on func
+var load = function(callback) {
+  var defaultSettings = {st1: "12TH", st2: "", st1nb: [], st1sb: ["ROUTE 1", "ROUTE 4", "ROUTE 7"], st2nb: [], st2sb: []};
+  var defaultFade = {st1nb: true, st1sb: false, st2nb: true, st2sb: true, st2: true};
+  chrome.storage.sync.get({
+    settings: defaultSettings,
+    fade: defaultFade
+  }, function(elem) {
+    mySettings = elem.settings;
+    fadeSettings = elem.fade;
+    if (callback != undefined) {
+      callback();
+    };
+  });
+};

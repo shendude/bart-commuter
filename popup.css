@@ -1,18 +1,26 @@
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Arial', sans-serif;
   font-weight: 700;
   white-space: nowrap;
-  max-width: 400px;
+  min-width: 240px;
   max-height: fit-content;
 }
 
 h2 {
-  padding: 5px;
+  padding: 0 2px;
+  margin: 0;
+  font-size: 22px;
 }
 
 div {
   background-color: #CCC;
   border-radius: 5px;
+  margin: 0;
+}
+
+p {
+  padding: 0 2px;
+  margin: 0;
 }
 
 ul {
@@ -30,3 +38,28 @@ li {
   border-radius: 5px;
   border-style: solid;
 }
+
+#st2 {
+  display: none;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  font-size: 10px;
+  visibility: hidden;
+  position: absolute;
+  background: white;
+  border-width: 3px;
+  border-radius: 3px;
+  border-style: solid;
+  border-color: black;
+  right: 20%;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
