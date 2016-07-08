@@ -2,4 +2,4 @@
 a bart chrome extension 
 
 
-currently a wip
+see at: https://chrome.google.com/webstore/detail/bart-commuter/afkmlnblnbgncdccljkdcjgaihnhmcbk
