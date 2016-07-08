@@ -6,7 +6,7 @@ install at: https://chrome.google.com/webstore/detail/bart-commuter/afkmlnblnbgn
 
 # to configure for first use:
 
--go into extension option page (right click button, or visit chrome-extension://afkmlnblnbgncdccljkdcjgaihnhmcbk/options.html)
+-go into extension option page (right click button, or visit: chrome-extension://afkmlnblnbgncdccljkdcjgaihnhmcbk/options.html)
 
 -set your trip departure station, and/or optionally enable trip two
 
