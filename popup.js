@@ -80,7 +80,7 @@ window.onload = function() {
       getStation(st2, st2HTML);
     } else {
       document.getElementById("st2").style.display = "none";
-    }
+    };
   });
 };
 

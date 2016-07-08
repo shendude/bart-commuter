@@ -167,7 +167,7 @@ var writeChkbox = function(arr, tarHTML) {
 
 //loads up saved settings into public variables, then callback on func
 var load = function(callback) {
-  var defaultSettings = {st1: "12TH", st2: "", st1nb: [], st1sb: ["ROUTE 1", "ROUTE 4", "ROUTE 7"], st2nb: [], st2sb: []};
+  var defaultSettings = {st1: "12TH", st2: "12TH", st1nb: [], st1sb: ["ROUTE 1", "ROUTE 4", "ROUTE 7"], st2nb: [], st2sb: []};
   var defaultFade = {st1nb: true, st1sb: false, st2nb: true, st2sb: true, st2: true};
   chrome.storage.sync.get({
     settings: defaultSettings,
